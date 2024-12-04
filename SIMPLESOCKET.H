@@ -88,7 +88,7 @@ public:
  */
 class TCPserver{
 private:
-	TCPserver();
+    TCPserver();
 
 
 	struct sockaddr_in ipOfServer_;
@@ -121,6 +121,7 @@ public:
 	void run();
 
 protected:
+
 	const char   *dataSend_;
 	char 		 *dataRecv_;
 	char   		  maxDataSizeRecv_;

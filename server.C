@@ -4,6 +4,7 @@
  *  Created on: 11.09.2019
  *      Author: aml
  */
+#include <iostream>
 #include <cstdio> // standard input and output library
 #include <cstdlib> // this includes functions regarding memory allocation
 #include <cstring> // contains string functions
@@ -17,10 +18,47 @@
 #include <netinet/in.h> //contains constants and structures needed for internet domain addresses
 
 #include "SIMPLESOCKET.H"
+using namespace std;
+
+class PasswortServer : public TCPserver{
+private:
+
+public:
+    //~PasswortServer();
+    PasswortServer(int port, int buffersize);
+
+protected:
+
+    string myResponse(string input);
+
+};
+
+
 
 
 int main(){
 	srand(time(nullptr));
-	TCPserver srv(2022,25);
+	PasswortServer srv(2022,25);
 	srv.run();
 }
+
+
+PasswortServer::PasswortServer(int port, int buffersize) : TCPserver(port, buffersize){
+
+}
+
+
+string PasswortServer::myResponse(string input){
+
+    if(0 == input.compare(0,6,"COORD[")){
+
+        return string ("OK");
+
+    }else{
+
+        return string ("UNKOWN_COMAND");
+    }
+
+    return string ("ERROR");
+}
+
