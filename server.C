@@ -10,7 +10,6 @@
 #include <cstring> // contains string functions
 #include <cerrno> //It defines macros for reporting and retrieving error conditions through error codes
 #include <ctime> //contains various functions for manipulating date and time
-
 #include <unistd.h> //contains various constants
 #include <sys/types.h> //contains a number of basic derived types that should be used whenever appropriate
 #include <arpa/inet.h> // defines in_addr structure
@@ -18,18 +17,23 @@
 #include <netinet/in.h> //contains constants and structures needed for internet domain addresses
 
 #include "SIMPLESOCKET.H"
+#include <sstream>
+#include <cstdio>
+
 using namespace std;
 
 class PasswortServer : public TCPserver{
-private:
 
 public:
     //~PasswortServer();
     PasswortServer(int port, int buffersize);
+    string myResponse(string input);
+
+private:
+
+
 
 protected:
-
-    string myResponse(string input);
 
 };
 
@@ -38,9 +42,10 @@ protected:
 
 int main(){
 	srand(time(nullptr));
-	PasswortServer srv(2022,25);
+	PasswortServer srv(2023,25);
 	srv.run();
 }
+
 
 
 PasswortServer::PasswortServer(int port, int buffersize) : TCPserver(port, buffersize){
@@ -48,17 +53,24 @@ PasswortServer::PasswortServer(int port, int buffersize) : TCPserver(port, buffe
 }
 
 
+
+
+
+
 string PasswortServer::myResponse(string input){
+    stringstream o;
+    int x,y,e;
 
-    if(0 == input.compare(0,6,"COORD[")){
+    if(input.compare(0,6,"COORD[")){
+        sscanf(input.c_str(),"COORD[%i,%i]",&x,&y);
+        if (e != 2){
+            return string("COULD NOT READ COORDINATES!");
+        }
+        o << "SUMME[" << (x+y) << "]";
+        return (o.str());
 
-        return string ("OK");
-
-    }else{
-
-        return string ("UNKOWN_COMAND");
     }
 
-    return string ("ERROR");
-}
+    return string("UNKNOWN_COMMAND");
 
+}
