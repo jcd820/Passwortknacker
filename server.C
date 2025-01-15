@@ -19,13 +19,13 @@
 #include "SIMPLESOCKET.H"
 #include <sstream>
 #include <cstdio>
-
+#include "TASK1.H"
 using namespace std;
 
 class PasswortServer : public TCPserver{
 
 public:
-    //~PasswortServer();
+    ~PasswortServer();
     PasswortServer(int port, int buffersize);
     string myResponse(string input);
 
@@ -34,6 +34,8 @@ private:
 
 
 protected:
+
+    TASK1::BlackBoxSafe  *bb = nullptr;
 
 };
 
@@ -49,28 +51,44 @@ int main(){
 
 
 PasswortServer::PasswortServer(int port, int buffersize) : TCPserver(port, buffersize){
+    bb = new TASK1::BlackBoxSafe(4,4);
+}
+
+PasswortServer::~PasswortServer(){
 
 }
 
 
 
 
-
-
 string PasswortServer::myResponse(string input){
     stringstream o;
-    int x,y,e;
+    int pwdL, alphabetL;
 
-    if(input.compare(0,6,"COORD[")){
-        sscanf(input.c_str(),"COORD[%i,%i]",&x,&y);
-        if (e != 2){
-            return string("COULD NOT READ COORDINATES!");
+
+    if(input.compare(0,7,"GenPWD[") == 0){
+        sscanf(input.c_str(),"GenPWD[%i,%i]",&pwdL,&alphabetL);
+        if (bb != nullptr){
+            delete bb;
+            bb = nullptr;
         }
-        o << "SUMME[" << (x+y) << "]";
-        return (o.str());
+        bb = new TASK1::BlackBoxSafe(pwdL,alphabetL);
+        return string("DONE");
+    }
+
+    if (input.compare(0,4,"PWD[") == 0){
+        int posStart;
+        int posEnd;
+        posStart = input.find("[");
+        posEnd = input.find("]");
+        string pwdGuess;
+        pwdGuess = input.substr(4,(posEnd-1) - posStart);
+        std::cout << "#" <<pwdGuess <<"# \n";
+        return (bb->input(pwdGuess));
 
     }
 
-    return string("UNKNOWN_COMMAND");
+
+    return string("Error");
 
 }

@@ -29,7 +29,7 @@ BlackBoxUnsafe::BlackBoxUnsafe(int pwdLength, int symbSetSize){
 	charSymbArray_ = new char [lengthSymbArray_ + 1];
 	strncpy(charSymbArray_, SYMBOLS.c_str(), lengthSymbArray_);
 	// create and save random password
-	pwd_ = this->randomPwd(pwdLength);
+	pwd_ = this->randomPwd(pwdLength); //ungesichert gespeichert
 	return;
 }
 

@@ -20,6 +20,7 @@
 #ifndef TASK1_H_
 #define TASK1_H_
 
+#include "SHA256.H"
 #include <string>
 
 using namespace std;
@@ -43,7 +44,7 @@ namespace TASK1{
  *	\brief This contains all possible characters a password can contain
  *
  */
-const string SYMBOLS = "ABCDEFGHIJKLMNOPQRTSTUVWXYZabcdefghijklmopqrstuvwxyz0123456789";
+const string SYMBOLS = "ABCDEFGHIJKLMNOPQRTSTUVWXYZabcdefghijklmopqrstuvwxyz0123456789"; //alphabet
 
 /**
  *
@@ -52,7 +53,7 @@ const string SYMBOLS = "ABCDEFGHIJKLMNOPQRTSTUVWXYZabcdefghijklmopqrstuvwxyz0123
  * \brief Defines the minimal length of a password
  *
  */
-const unsigned int MINIMAL_PWD_LENGTH = 4;
+const unsigned int MINIMAL_PWD_LENGTH = 4; //ABCD
 
 /**
  *
@@ -64,7 +65,7 @@ const unsigned int MINIMAL_PWD_LENGTH = 4;
 class IBlackBox{
 public:
 	virtual string input(string strPwd) = 0;
-	virtual string getSymbols() = 0;
+	virtual string getSymbols() = 0; //Alphabet vom Server übernehmen
 };
 
 
@@ -80,7 +81,7 @@ class BlackBoxUnsafe : public IBlackBox{
 public:
 				   BlackBoxUnsafe(int pwdLength, int symbSetSize);
 	virtual string input(string strPwd);
-			string getSymbols();
+			string getSymbols(); //Alphabet vom Server übernehmen
 
 			string pwd_;
 
@@ -104,8 +105,16 @@ protected:
 class BlackBoxSafe : public BlackBoxUnsafe{
 	/// \todo  Implementation of class BlackBoxSafe needs to be finalized.
 public:
-	BlackBoxSafe(int pwdLength, int symbSetSize) : BlackBoxUnsafe(pwdLength, symbSetSize){;};
-	virtual string input(string strPwd){return string("undefined");};
+	BlackBoxSafe(int pwdLength, int symbSetSize) : BlackBoxUnsafe(pwdLength, symbSetSize){
+        pwd_ = sha256(pwd_); //Hash Passwort;; zum Testen muss vom Testpasswort der Hashwert berechnet werden und mit dem Hashwert verglichen werden.
+
+
+
+	;};
+	virtual string input(string strPwd){
+        return (BlackBoxUnsafe::input(sha256(pwd_)));
+
+	;};
 };
 
 
