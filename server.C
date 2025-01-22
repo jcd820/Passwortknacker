@@ -4,6 +4,7 @@
  *  Created on: 11.09.2019
  *      Author: aml
  */
+#include <iostream>
 #include <cstdio> // standard input and output library
 #include <cstdlib> // this includes functions regarding memory allocation
 #include <cstring> // contains string functions
@@ -19,11 +20,17 @@
 #include "SIMPLESOCKET.H"
 #include "TASK1.H"
 
+using namespace std;
+
 class PasswortServer : public TCPserver{
 public:
     PasswortServer(int port, int bufferSize);    //int maxDataSizeRecv geht auch anstatt bufferSize
+    string myResponse(string input);
+
 protected:                                       //private aufgrund von Komplikationen entfernt
-    string myResponse(string inptut);
+
+    TASK1::BlackBoxSafe *bb = nullptr;
+
 };
 
 int main(){
@@ -34,12 +41,37 @@ int main(){
 	srv.run();
 }
 
+
+
 string PasswortServer::myResponse(string input){
 
-    if(0 == input.compare(0,6,"COORD[")){
-    return string("OK");
-    }else {
-            return string("UNKNOWN_COMMAND");
+    int pwdL, alphabetL;
+
+    if(input.compare(0,7,"GENPWD[") == 0){
+        sscanf(input.c_str(),"GENPWD[%i,%i]",&pwdL,&alphabetL);
+
+        if(bb != nullptr){
+            delete bb;
+            bb = nullptr;
+        }
+        bb = new TASK1::BlackBoxSafe(pwdL,alphabetL);
+        return string("DONE");
+    }
+
+    if(input.compare(0,4,"PWD[") == 0 ){
+        int posStart;
+        int posEnd;
+        posStart = input.find("[");
+        posEnd = input.find ("]");
+        string pwdGuess;
+        pwdGuess = (input.substr(4,posEnd - posStart - 1));
+
+        cout << "#" << pwdGuess << "#\n";
+        return (bb->input(pwdGuess));
+    }
+
+{
+            return string("ERROR");
             }
 
 
@@ -48,10 +80,5 @@ string PasswortServer::myResponse(string input){
 
 
 PasswortServer::PasswortServer(int port,int bufferSize) : TCPserver(port,bufferSize){
-
+    bb = new TASK1::BlackBoxSafe(4,4);
 }
-/*
-PasswortServer::PasswortServer (){
-
-}
-*/
