@@ -106,13 +106,14 @@ class BlackBoxSafe : public BlackBoxUnsafe{
 	/// \todo  Implementation of class BlackBoxSafe needs to be finalized.
 public:
 	BlackBoxSafe(int pwdLength, int symbSetSize) : BlackBoxUnsafe(pwdLength, symbSetSize){
+        cout <<"Password: "<<pwd_ <<endl;
         pwd_ = sha256(pwd_); //Hash Passwort;; zum Testen muss vom Testpasswort der Hashwert berechnet werden und mit dem Hashwert verglichen werden.
 
 
 
 	;};
-	virtual string input(string strPwd){
-        return (BlackBoxUnsafe::input(sha256(pwd_)));
+	virtual string input(string strPwd){ //??
+        return (BlackBoxUnsafe::input(sha256(strPwd)));
 
 	;};
 };

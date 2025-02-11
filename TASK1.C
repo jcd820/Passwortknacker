@@ -36,8 +36,10 @@ BlackBoxUnsafe::BlackBoxUnsafe(int pwdLength, int symbSetSize){
 string BlackBoxUnsafe::input(string strPwd){
 	if(strPwd.compare(pwd_) == 0){
 		return string("ACCESS ACCEPTED");
+
 	}
 	return string("ACCESS DENIED");
+
 }
 
 string BlackBoxUnsafe::randomPwd(int l){

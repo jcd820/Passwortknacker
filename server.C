@@ -73,7 +73,8 @@ string PasswortServer::myResponse(string input){
             bb = nullptr;
         }
         bb = new TASK1::BlackBoxSafe(pwdL,alphabetL);
-        return string("DONE");
+        std::cout <<"Password chiffre: " <<bb->pwd_ <<endl;
+        return string("done");
     }
 
     if (input.compare(0,4,"PWD[") == 0){

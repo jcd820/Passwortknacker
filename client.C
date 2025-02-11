@@ -8,34 +8,101 @@
 #include <string>
 #include <iostream>
 #include <unistd.h> //contains various constants
-
+#include <cstdlib>
+#include <ctime>
+#include "SHA256.H"
+#include "TASK1.H"
 #include "SIMPLESOCKET.H"
+
 
 using namespace std;
 
+//Kindklasse von TCPClient
+class PasswordClient : public TCPclient{
+public:
+    PasswordClient() : TCPclient(){};
+    string randompwd (int pwdL, int alphabetL);
+
+};
+
+
+
+string PasswordClient::randompwd (int pwdL, int alphabetL) {
+    string pwd;
+    for (int i = 0; i < pwdL; i++){
+        int randomNumb = rand() %alphabetL;
+        pwd += TASK1::SYMBOLS[randomNumb];
+    }
+
+    pwd = "PWD[" + pwd + "]";
+
+    return pwd;
+}
+
+
+
+
 int main() {
 	srand(time(NULL));
-	TCPclient c;
+	PasswordClient c;
 	string host = "localhost";
 	string msg;
+    int pwdL = 10;
+    int alphabetL = 4;
+    int loop = 50;
 
 	//connect to host
-	c.conn(host , 2022);
+	c.conn(host , 2023);
 
+    cout<<"Password length: " << pwdL <<endl;
+    cout<<"Alphabet length: " << alphabetL <<endl;
+    cout<<"Alphabet: " << TASK1::SYMBOLS.substr(0,(alphabetL)) <<endl;
 	int i=0;
 	bool goOn=1;
+
 	while(goOn){ // send and receive data
-		if((rand() % 20) < i++){
-			msg = string("BYEBYE");
-			goOn = 0;
-		}else{
-			msg = string("client wants this");
-		}
-		cout << "client sends:" << msg << endl;
-		c.sendData(msg);
-		msg = c.receive(32);
-		cout << "got response:" << msg << endl;
-		sleep(1);
+
+
+
+        for (int i = 0; i < loop; i++){
+            int counter = 0;
+            msg = "GenPWD[" + to_string(pwdL) + "," + to_string(alphabetL) + "]";
+            //cout <<"client sends: " <<msg <<endl;
+            c.sendData(msg);
+            msg = c.receive(32);
+            //cout <<"got response: " <<msg <<endl;
+
+            if (msg == "done"){
+
+                while (msg != "ACCESS ACCEPTED"){
+
+                    msg = string(c.randompwd(pwdL,alphabetL));
+                    //cout <<"client sends: " <<msg <<endl;
+                    c.sendData(msg);
+                    msg = c.receive(32);
+                    //cout <<"got response: " <<msg <<endl;
+
+                    if (msg == "Error"){
+                        cout <<"Error occured" <<endl;
+                        break;
+
+                    }
+                counter++;
+                }
+                cout /*<<"attempts: " */<<counter <<endl;
+
+            }
+
+
+
+
+        }
+        msg = string("BYEBYE");
+        cout <<"client sends: " <<msg <<endl;
+        c.sendData(msg);
+        c.receive(32);
+        cout <<"got response: " <<msg <<endl;
+        goOn = 0;
 
 	}
 }
