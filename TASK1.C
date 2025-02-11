@@ -72,6 +72,17 @@ void demoTASK1_01(){
 	return;
 }
 
+
+BlackBoxSafe::BlackBoxSafe(int pwdLength, int symbSetSize) : BlackBoxUnsafe(pwdLength, symbSetSize){
+    cout <<"Password: "<<pwd_ <<endl;
+    pwd_ = sha256(pwd_); //Passwort wird verschlüsselt abgespeichert
+
+}
+
+string BlackBoxSafe::input(string strPwd){
+    return (BlackBoxUnsafe::input(sha256(strPwd)));
+}
+
 }
 
 

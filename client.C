@@ -21,12 +21,12 @@ using namespace std;
 class PasswordClient : public TCPclient{
 public:
     PasswordClient() : TCPclient(){};
-    string randompwd (int pwdL, int alphabetL);
+    string randompwd (int pwdL, int alphabetL); //Funktion erzeugt ein zufälliges Passwort mit einer definierten Passwort- und Alphabetlänge
 
 };
 
 
-
+//Überschreiben der Funktion randompwd aus der Elternklasse
 string PasswordClient::randompwd (int pwdL, int alphabetL) {
     string pwd;
     for (int i = 0; i < pwdL; i++){
@@ -36,7 +36,7 @@ string PasswordClient::randompwd (int pwdL, int alphabetL) {
 
     pwd = "PWD[" + pwd + "]";
 
-    return pwd;
+    return pwd; //Rückgabe eines zufälligen Passworts in der Form: PWD[Passwort]
 }
 
 
@@ -47,9 +47,10 @@ int main() {
 	PasswordClient c;
 	string host = "localhost";
 	string msg;
-    int pwdL = 10;
-    int alphabetL = 4;
-    int loop = 50;
+	//Variablen
+    int pwdL = 4; //definiert die Passwortlänge
+    int alphabetL = 2; //definiert die Alphabetlänge
+    int loop = 10; //definiert die Anzahl der Durchläufe
 
 	//connect to host
 	c.conn(host , 2023);
@@ -65,22 +66,22 @@ int main() {
 
 
         for (int i = 0; i < loop; i++){
-            int counter = 0;
+            int counter = 0; //Variable zur Erfassung der Anzahl der Versuche
             msg = "GenPWD[" + to_string(pwdL) + "," + to_string(alphabetL) + "]";
-            //cout <<"client sends: " <<msg <<endl;
+            cout <<"client sends: " <<msg <<endl;
             c.sendData(msg);
             msg = c.receive(32);
-            //cout <<"got response: " <<msg <<endl;
+            cout <<"got response: " <<msg <<endl;
 
             if (msg == "done"){
 
                 while (msg != "ACCESS ACCEPTED"){
 
                     msg = string(c.randompwd(pwdL,alphabetL));
-                    //cout <<"client sends: " <<msg <<endl;
+                    cout <<"client sends: " <<msg <<endl;
                     c.sendData(msg);
                     msg = c.receive(32);
-                    //cout <<"got response: " <<msg <<endl;
+                    cout <<"got response: " <<msg <<endl;
 
                     if (msg == "Error"){
                         cout <<"Error occured" <<endl;
@@ -89,7 +90,7 @@ int main() {
                     }
                 counter++;
                 }
-                cout /*<<"attempts: " */<<counter <<endl;
+                cout <<"attempts: " <<counter <<endl;
 
             }
 
