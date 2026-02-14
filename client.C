@@ -4,16 +4,16 @@
  *  Created on: 11.09.2019
  *      Author: aml
  */
-
+#include <chrono>
 #include <string>
 #include <iostream>
 #include <unistd.h> //contains various constants
 #include <cstdlib>
 #include <ctime>
+#include <fstream>
 #include "SHA256.H"
 #include "TASK1.H"
 #include "SIMPLESOCKET.H"
-
 
 using namespace std;
 
@@ -49,8 +49,19 @@ int main() {
 	string msg;
 	//Variablen
     int pwdL = 4; //definiert die Passwortlänge
-    int alphabetL = 2; //definiert die Alphabetlänge
+    int alphabetL = 10; //definiert die Alphabetlänge
     int loop = 10; //definiert die Anzahl der Durchläufe
+
+    int totalAttempts = 0;
+
+    //CSV Datei öffnen
+    ofstream csv("client_output.csv");
+    if (!csv) {
+        cerr << "CSV konnte nicht geöffnet werden\n";
+        return 1;
+
+    }
+    csv << "pwdL,alphabetL, loop, attempts\n";
 
 	//connect to host
 	c.conn(host , 2023);
@@ -58,6 +69,7 @@ int main() {
     cout<<"Password length: " << pwdL <<endl;
     cout<<"Alphabet length: " << alphabetL <<endl;
     cout<<"Alphabet: " << TASK1::SYMBOLS.substr(0,(alphabetL)) <<endl;
+
 	int i=0;
 	bool goOn=1;
 
@@ -78,10 +90,11 @@ int main() {
                 while (msg != "ACCESS ACCEPTED"){
 
                     msg = string(c.randompwd(pwdL,alphabetL));
-                    cout <<"client sends: " <<msg <<endl;
+                    //cout <<"client sends: " <<msg <<endl;
+
                     c.sendData(msg);
                     msg = c.receive(32);
-                    cout <<"got response: " <<msg <<endl;
+                    //cout <<"got response: " <<msg <<endl;
 
                     if (msg == "Error"){
                         cout <<"Error occured" <<endl;
@@ -91,7 +104,8 @@ int main() {
                 counter++;
                 }
                 cout <<"attempts: " <<counter <<endl;
-
+                csv << pwdL << "," <<alphabetL << "," << loop << "," << counter << '\n';
+                totalAttempts += counter;
             }
 
 
@@ -106,6 +120,8 @@ int main() {
         goOn = 0;
 
 	}
+	csv << "SUM,,," << totalAttempts << '\n';
+    csv.close();
+return 0;
 }
-
 
