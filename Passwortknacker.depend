@@ -1,13 +1,13 @@
 # depslib dependency file v1.0
-1730909761 source:/home/ubuntu/Gruppe6/SHA256.C
+1730909761 source:/home/ubuntu/PPasswortknacker/SHA256.C
 	<cstring>
 	<fstream>
 	"SHA256.H"
 
-1730909761 /home/ubuntu/Gruppe6/SHA256.H
+1730909761 /home/ubuntu/PPasswortknacker/SHA256.H
 	<string>
 
-1730909761 source:/home/ubuntu/Gruppe6/SIMPLESOCKET.C
+1730909761 source:/home/ubuntu/PPasswortknacker/SIMPLESOCKET.C
 	<iostream>
 	<cstdio>
 	<cstring>
@@ -25,17 +25,17 @@
 	<ctime>
 	"SIMPLESOCKET.H"
 
-1730909761 /home/ubuntu/Gruppe6/SIMPLESOCKET.H
+1730909761 /home/ubuntu/PPasswortknacker/SIMPLESOCKET.H
 	<string>
 	<arpa/inet.h>
 
-1730909761 source:/home/ubuntu/Gruppe6/TASK1.C
+1730909761 source:/home/ubuntu/PPasswortknacker/TASK1.C
 	<cstdlib>
 	<cstring>
 	<iostream>
 	"TASK1.H"
 	"SHA256.H"
 
-1730909761 /home/ubuntu/Gruppe6/TASK1.H
+1730909761 /home/ubuntu/PPasswortknacker/TASK1.H
 	<string>
 
