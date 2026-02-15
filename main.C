@@ -1,5 +1,5 @@
 //============================================================================
-// Name        : Gruppe6.cpp
+// Name        : Passwortknacker.cpp
 // Author      :
 // Version     :
 // Copyright   : Your copyright notice

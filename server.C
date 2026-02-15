@@ -75,7 +75,7 @@ string PasswortServer::myResponse(string input){
         }
         bb = new TASK1::BlackBoxSafe(pwdL,alphabetL);
         std::cout <<"Password chiffre: " <<bb->pwd_ <<endl;
-        return string("done"); //Rückgabe eines neuen zufälligen Passworts in der gewünschten Passwort- und Alphabetlänge
+        return string("done"); //Rückgabe eines neuen zufälligen Passworts in  der gewünschten Passwort- und Alphabetlänge
     }
     //Antwort auf PWD
     if (input.compare(0,4,"PWD[") == 0){

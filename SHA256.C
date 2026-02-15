@@ -5,7 +5,6 @@
  *      Author: aml
  */
 
-
 #include <cstring>
 #include <fstream>
 #include "SHA256.H"

@@ -15,7 +15,6 @@
  */
 
 
-
 /*
  * Updated to C++, zedwood.com 2012
  * Based on Olivier Gay's version
