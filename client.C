@@ -49,7 +49,7 @@ int main() {
 	string msg;
 	//Variablen
     int pwdL = 4; //definiert die Passwortlänge
-    int alphabetL = 10; //definiert die Alphabetlänge
+    int alphabetL = 4; //definiert die Alphabetlänge
     int loop = 10; //definiert die Anzahl der Durchläufe
 
     int totalAttempts = 0;
